@@ -1,0 +1,60 @@
+services:
+  frontend:
+    build: './frontend'
+    container_name: 'frontend'
+    ports:
+      - '3333:3333'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - grafana-dir:/grafana
+      - prometheus-dir:/prometheus
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    command:
+
+  books:
+    build: './books'
+    container_name: 'books'
+    ports: '8888:8888'
+    depends_on:
+      - frontend
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+
+    customers:
+      build: './customers'
+      container_name: 'customers'
+      ports:
+        - '5555:5555'
+      depends_on:
+        - frontend
+      volumes:
+        - '/var/run/docker.sock:/var/run/docker.sock'
+
+    orders:
+      build: './orders'
+      container_name: 'orders'
+      ports:
+        - '7777:7777'
+      depends_on:
+        - frontend
+      volumes:
+        - '/var/run/docker.sock:/var/run/docker.sock'
+
+    nginx:
+      image: nginx:latest
+      container_name: 'production_nginx'
+      ports:
+        - '8000:8000'
+      volumes:
+        - './frontend:/srv/www/static'
+        - './default.conf:/etc/nginx/conf.d/default.conf'
+      depends_on:
+        - frontend
+        - books
+        - customers
+        - orders
