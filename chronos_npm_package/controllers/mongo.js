@@ -131,7 +131,8 @@ mongo.health = async ({ microservice, interval, mode }) => {
  * !Runs instead of health if dockerized is true
  * Collects information on the docker container
  */
-mongo.docker = ({ microservice, interval, mode }) => { //:config file, interval of calls, nada
+mongo.docker = ({ microservice, interval, mode }) => {
+  //:config file, interval of calls, nada
   // Create collection using name of microservice
   const containerInfo = ContainerInfoFunc(`${microservice}`);
   dockerHelper
@@ -174,6 +175,8 @@ mongo.saveService = config => {
     microservice = 'kafkametrics';
   } else if (config.mode === 'kubernetes') {
     microservice = 'kubernetesmetrics';
+  } else if (config.mode === 'docker') {
+    microservice = `${config.containerName}`;
   } else {
     throw new Error('Unrecongnized mode');
   }
@@ -203,6 +206,9 @@ mongo.setQueryOnInterval = async config => {
     metricsQuery = utilities.kafkaMetricsQuery;
   } else if (config.mode === 'kubernetes') {
     model = KubernetesModel;
+    metricsQuery = utilities.promMetricsQuery;
+  } else if (config.mode === 'docker') {
+    model = ContainerInfoFunc(`${config.containerName}`);
     metricsQuery = utilities.promMetricsQuery;
   } else {
     throw new Error('Unrecognized mode');
@@ -251,18 +257,19 @@ mongo.getSavedMetricsLength = async (mode, currentMetricNames) => {
   return currentMetrics.length ? currentMetrics.length : 0;
 };
 
-mongo.addMetrics = async (arr, mode, obj) => {
+mongo.addMetrics = async (arr, mode, obj, model) => {
+  const metrics = [];
   const newMets = [];
-  arr.forEach(el => {
-    if (!(el.metric in obj)) {
-      const { metric } = el;
-      newMets.push({ metric: metric, mode: mode });
-      obj[el.metric] = true;
+  for (let metric of arr) {
+    if (!(metric.metric in obj)) {
+      const name = metric.metric;
+      newMets.push({ metric: name, mode: mode });
+      metrics.push(metric);
+      obj[metric.metric] = true;
     }
-  });
-  await MetricsModel.insertMany(newMets, err => {
-    if (err) console.error(err);
-  });
+  }
+  await MetricsModel.create(newMets);
+  await model.create(metrics);
   return arr.length;
 };
 
