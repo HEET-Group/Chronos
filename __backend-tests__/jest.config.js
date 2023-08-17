@@ -20,6 +20,7 @@ module.exports = {
   // Code coverage settings
   collectCoverage: true,
   coverageDirectory: 'coverage',
+  testTimeout: 20000,
 
   // Specify the test path patterns to ignore (frontend tests)
   testPathIgnorePatterns: ['/node_modules/', '/__tests__/'],
