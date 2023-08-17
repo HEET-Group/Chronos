@@ -1,5 +1,4 @@
 const webdriver = require('selenium-webdriver');
-//const path = require('path');
 const { By, until } = webdriver;
 
 (async function() {
@@ -7,7 +6,6 @@ const { By, until } = webdriver;
     .usingServer('http://localhost:9515')
     .withCapabilities({
       'goog:chromeOptions': {
-        //binary: 'node_modules/electron/dist/Electron.app/Contents/MacOS/Electron',
         debuggerAddress: 'localhost:9222',
       }
     })
@@ -15,20 +13,10 @@ const { By, until } = webdriver;
     .build();
 
   try {
-    // await driver.get('about:blank'); 
-    // await driver.executeScript(`
-    //   const { exec } = require('child_process');
-    //   exec('npm run dev:electron'); // Start Electron
-    // `);
-    //await driver.sleep(5000);
-    //await driver.get('http://localhost:8080/');  
     await driver.wait(until.elementLocated(By.className('card')), 30000);
-    const logs = await driver.manage().logs().get('browser');
-    console.log(logs);
     await driver.findElement(By.className('card')).click();
     await driver.wait(until.elementLocated(By.className('add-container')), 10000);
     await driver.findElement(By.className('env-button2')).click();
-    //await driver.wait(until.elementLocated(By.className('local-hosted-modal')), 10000);
     await driver.wait(until.elementLocated(By.className('add-container')), 10000); 
 
     await driver.findElement(By.id('serv-type')).sendKeys('Docker');
