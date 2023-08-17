@@ -155,7 +155,7 @@ const helpers = {
     URI += 'up';
     try {
       const response = await axios.get(URI);
-      if (response.status !== 200 || response.status !== 'success') console.error('Invalid response from metrics server:', URI, response.status, response.data);
+      if (response.status !== 200) console.error('Invalid response from metrics server:', URI, response.status, response.data);
       else console.log('Successful initial response from metrics server:', URI);
       return response;
     } catch (error) {
