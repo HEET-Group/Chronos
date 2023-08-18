@@ -233,6 +233,7 @@ const helpers = {
     }
     try {
       const response = await axios.get(query);
+      console.log('promMetricsQuery line 236:', response.data.data.result);
       return helpers.parseProm(config, response.data.data.result);
     } catch (error) {
       return console.error(config.mode, '|', 'Error fetching from URI:', URI, '\n', error);
@@ -265,7 +266,7 @@ const helpers = {
       let name;
       if (config.mode === 'docker') {
         if (!info.metric.name) continue;
-        name = info.metric.name + '/' + info.metric['__name__'];
+        name = info.metric['__name__'];
       } else {
         if (!info.metric.job) continue;
         // Set the base name using the job, IP, and metric __name__
@@ -291,7 +292,8 @@ const helpers = {
         category: category,
       });
     }
-
+    console.log('parseProm names array:', names);
+    console.log('parseProm line 295:', res);
     return res;
   },
 };
