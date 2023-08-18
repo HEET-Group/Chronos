@@ -222,7 +222,10 @@ const GraphsContainer: React.FC = React.memo(props => {
               />
             )}
             {chart.startsWith('event_') && (
-              <EventContainer colourGenerator={stringToColour} sizing="solo" />
+              <>
+                <EventContainer colourGenerator={stringToColour} sizing="solo" />
+              </>
+
             )}
             {chart === 'docker' && <DockerChart />}
             {chart === 'modifyMetrics' && <ModifyMetrics />}
