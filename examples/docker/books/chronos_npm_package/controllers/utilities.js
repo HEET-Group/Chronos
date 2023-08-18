@@ -140,6 +140,8 @@ const helpers = {
       return `http://${config.promService}:${config.promPort}/api/v1/query?query=`;
     } else if (config.mode === 'docker') {
       return `http://${config.promService}:${config.promPort}/api/v1/query?query=`;
+    } else if (config.mode === 'docker') {
+      return `http://${config.promService}:${config.promPort}/api/v1/query?query=`;
     } else {
       throw new Error('Unrecognized mode');
     }
