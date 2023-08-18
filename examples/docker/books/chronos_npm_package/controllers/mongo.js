@@ -209,7 +209,9 @@ mongo.setQueryOnInterval = async config => {
     metricsQuery = utilities.promMetricsQuery;
   } else if (config.mode === 'docker') {
     model = ContainerInfoFunc(`${config.containerName}`);
+    console.log('setQueryOnInterval line 212 dockerModel:', ContainerInfoFunc(`${config.containerName}`));
     metricsQuery = utilities.promMetricsQuery;
+    console.log('setQueryOnInterval line 214 metricsQuery:', metricsQuery);
   } else {
     throw new Error('Unrecognized mode');
   }
@@ -222,9 +224,10 @@ mongo.setQueryOnInterval = async config => {
     metricsQuery(config)
       // This updates the Metrics Model with all chosen metrics. If there are no chosen metrics it sets all available metrics as chosen metrics within the metrics model.
       .then(async parsedArray => {
+        console.log('parsedArray.length is: ', parsedArray.length);
         // This conditional would be used if new metrics are available to be tracked.
         if (length !== parsedArray.length) {
-          length = await mongo.addMetrics(parsedArray, config.mode, currentMetricNames);
+          length = await mongo.addMetrics(parsedArray, config.mode, currentMetricNames, model);
         }
         const documents = [];
         for (const metric of parsedArray) {
