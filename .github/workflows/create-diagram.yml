@@ -2,8 +2,6 @@ name: Build repo-visualization
 
 on:
   push:
-    path:
-      - '*.md'
 
 jobs:
   rebuild visualization:
