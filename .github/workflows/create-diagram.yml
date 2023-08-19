@@ -1,14 +1,15 @@
 name: Build repo-visualization
 
 on:
-  push: [ visualizer ]
+  push:
+    branch: [ visualizer ]
 
 jobs:
   rebuild visualization:
     runs-on: ubuntu-latest
     root_path: ''
     uses: actions/checkout
-    uses: actions/githubocto/repo-visualizer@0.9.1
+    uses: githubocto/repo-visualizer@0.9.1
        with:
          output_file: "diagram.svg"
          exclude_files: "dist, node_modules"
