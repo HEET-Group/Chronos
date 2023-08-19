@@ -54,7 +54,6 @@ Chronos is a comprehensive developer tool that monitors the health and web traff
 # Installation
 
 This is for the latest Chronos **version 11.0 release**.
-![Visualization of the codebase](diagram.svg)
 <a href="diagram.svg"><img src="diagram.svg" alt="Diagram" title="Diagram" align="center"/></a>
 
 ## NPM Package
