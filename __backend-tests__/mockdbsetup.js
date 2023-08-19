@@ -6,11 +6,13 @@ let mongo = null;
 const connectDB = async () => {
   mongo = await MongoMemoryServer.create();
   const uri = mongo.getUri();
+  console.log('mockdbsetup, ln9:', uri);
  
   await mongoose.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
+  console.log('mockdbsetup, ln15:', mongo);
 };
 
 const dropDB = async () => {
