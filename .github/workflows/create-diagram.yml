@@ -9,6 +9,6 @@ jobs:
     steps:
       - uses: actions/checkout
       - uses: actions/githubocto/repo-visualizer@0.9.1
-      - with:
-        output_file: "../diagram.svg"
-        exclude_files: "dist, node_modules"
+        with:
+          output_file: "../diagram.svg"
+          exclude_files: "dist, node_modules"
