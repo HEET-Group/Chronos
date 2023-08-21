@@ -15,5 +15,5 @@ jobs:
 
       - name: Update diagram
         uses: githubocto/repo-visualizer@main
-          output_file: "../diagram.svg"
+
 
