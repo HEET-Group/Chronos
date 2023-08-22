@@ -1,0 +1,18 @@
+name: Docker Example Image Build
+
+on:
+  push:
+    branches: ['devDocker_v2']
+    paths: ['examples/docker/**']
+  pull_request:
+    branches: ['devDocker_v2']
+    paths: ['examples/docker/**']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker-compose -f docker-compose.yml up
